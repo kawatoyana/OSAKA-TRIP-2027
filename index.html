@@ -38,6 +38,8 @@
       color: var(--text-dark);
       line-height: 1.6;
       padding-bottom: 60px;
+      position: relative;
+      overflow-x: hidden;
     }
 
     header {
@@ -57,14 +59,16 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
+      position: relative;
+      z-index: 2;
     }
 
-    /* 迪士尼城堡裝飾背景 */
+    /* 精細迪士尼城堡與魔法氣泡裝飾 */
     .header-castle-bg {
       position: absolute;
-      right: 5%;
-      top: 15%;
-      opacity: 0.12;
+      right: 4%;
+      top: 10%;
+      opacity: 0.18;
       pointer-events: none;
     }
 
@@ -75,7 +79,7 @@
 
     @keyframes sparkle {
       0% { transform: scale(0.8) rotate(0deg); opacity: 0.7; }
-      100% { transform: scale(1.1) rotate(15deg); opacity: 1; }
+      100% { transform: scale(1.15) rotate(15deg); opacity: 1; }
     }
 
     .container {
@@ -153,41 +157,77 @@
       border-radius: 2px;
     }
 
-    /* 頁籤切換按鈕 */
+    /* 頁籤外層包覆容器 (附滾動按鈕與遮罩) */
+    .tabs-wrapper {
+      position: relative;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+    }
+
+    .scroll-arrow {
+      background: var(--bg-card);
+      border: 1px solid var(--accent);
+      color: var(--primary-dark);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      font-weight: bold;
+      z-index: 5;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .scroll-arrow:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* 頁籤切換按鈕容器 (完全隱藏滾動條，保持左右滾動) */
     .tabs-container {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       overflow-x: auto;
-      padding: 4px 2px 12px 2px;
-      margin-bottom: 25px;
-      scrollbar-width: none;
+      padding: 6px 10px 10px 10px;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none;  /* IE and Edge */
       -webkit-overflow-scrolling: touch;
       width: 100%;
       white-space: nowrap;
+      position: relative;
     }
 
     .tabs-container::-webkit-scrollbar {
-      display: none;
+      display: none; /* Chrome, Safari, Opera */
+      width: 0;
+      height: 0;
     }
 
     .tab-btn {
       background: var(--bg-card);
       border: 1px solid var(--accent);
-      padding: 6px 14px;
-      font-size: 0.85rem;
+      padding: 8px 18px;
+      font-size: 0.88rem;
       font-weight: 600;
-      border-radius: 16px;
+      border-radius: 20px;
       color: var(--text-dark);
       cursor: pointer;
       white-space: nowrap;
       flex-shrink: 0;
       transition: all 0.25s ease;
       box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+      position: relative;
+      overflow: hidden;
     }
 
     @media (min-width: 768px) {
       header h1 { font-size: 2.5rem; }
-      .tab-btn { padding: 8px 16px; font-size: 0.88rem; }
+      .tab-btn { padding: 8px 20px; font-size: 0.9rem; }
     }
 
     .tab-btn:hover { background: var(--accent); }
@@ -234,15 +274,17 @@
       .overview-day-card { flex-direction: row; }
     }
 
+    /* 側邊標題卡片美化與純向量精細插圖 */
     .overview-side-badge {
       background: linear-gradient(135deg, #a38260 0%, #c4a482 100%);
       color: #fff;
       padding: 22px;
-      min-width: 210px;
+      min-width: 220px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       position: relative;
+      overflow: hidden;
     }
 
     .overview-side-badge .day-num {
@@ -250,6 +292,8 @@
       font-weight: 700;
       line-height: 1.1;
       font-family: 'Playfair Display', serif;
+      position: relative;
+      z-index: 2;
     }
 
     .overview-side-badge .day-date {
@@ -257,6 +301,8 @@
       opacity: 0.95;
       margin-top: 6px;
       font-weight: 500;
+      position: relative;
+      z-index: 2;
     }
 
     .overview-side-badge .weather-link {
@@ -272,10 +318,29 @@
       text-decoration: none;
       transition: background 0.2s;
       width: fit-content;
+      position: relative;
+      z-index: 2;
     }
 
     .overview-side-badge .weather-link:hover {
       background: rgba(255, 255, 255, 0.38);
+    }
+
+    /* 內嵌純向量裝飾插圖（保證 100% 顯示不破圖） */
+    .side-badge-svg-illus {
+      position: absolute;
+      right: -8px;
+      bottom: -12px;
+      width: 105px;
+      height: 105px;
+      pointer-events: none;
+      opacity: 0.32;
+      transition: transform 0.35s ease, opacity 0.35s ease;
+    }
+
+    .overview-day-card:hover .side-badge-svg-illus {
+      transform: scale(1.12) rotate(-4deg);
+      opacity: 0.45;
     }
 
     .overview-content-body {
@@ -519,7 +584,7 @@
 
     .map-btn:hover { background: var(--accent); }
 
-    /* 景點介紹頁面 */
+    /* 景點介紹與備選餐廳頁面 */
     .day-group-title {
       font-size: 1.2rem;
       font-weight: 700;
@@ -732,6 +797,7 @@
       border: 1px solid rgba(196, 164, 130, 0.15);
       margin-bottom: 25px;
       position: relative;
+      overflow: hidden;
     }
 
     .hotel-header {
@@ -764,11 +830,12 @@
       color: var(--text-muted);
     }
 
+    /* 精細輕盈迪士尼插畫細節 */
     .disney-illus {
       position: absolute;
-      right: 18px;
-      bottom: 12px;
-      opacity: 0.15;
+      right: 14px;
+      bottom: 10px;
+      opacity: 0.22;
       pointer-events: none;
     }
 
@@ -805,6 +872,27 @@
       box-shadow: 0 6px 18px rgba(163, 130, 96, 0.5);
     }
 
+    /* 頁籤星光動態粒子 */
+    .sparkle-particle {
+      position: fixed;
+      pointer-events: none;
+      background: var(--disney-magic);
+      border-radius: 50%;
+      z-index: 9999;
+      animation: particleExplode 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    @keyframes particleExplode {
+      0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--dx), var(--dy)) scale(0);
+        opacity: 0;
+      }
+    }
+
     footer {
       text-align: center;
       margin-top: 50px;
@@ -816,10 +904,16 @@
 <body>
 
   <header id="page-top">
-    <!-- 迪士尼城堡背襯 SVG -->
-    <svg class="header-castle-bg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="#a38260" stroke-width="1">
-      <path d="M5 21V14L3 14V11L5 11V8L12 3L19 8V11L21 11V14L19 14V21H5Z"/>
-      <path d="M9 21V17C9 15.3431 10.3431 14 12 14C13.6569 14 15 15.3431 15 17V21"/>
+    <!-- 迪士尼精細城堡與魔法氣泡背襯 SVG -->
+    <svg class="header-castle-bg" width="140" height="140" viewBox="0 0 100 100" fill="none" stroke="#d4af37" stroke-width="0.8">
+      <path d="M20 85V55L12 55V42L20 42V30L50 10L80 30V42L88 42V55L80 55V85H20Z"/>
+      <path d="M35 85V68C35 60 42 55 50 55C58 55 65 60 65 68V85"/>
+      <path d="M50 10V85"/>
+      <circle cx="50" cy="25" r="4" fill="#d4af37" opacity="0.3"/>
+      <circle cx="28" cy="20" r="1.5" fill="#d4af37" opacity="0.5"/>
+      <circle cx="72" cy="22" r="2" fill="#d4af37" opacity="0.4"/>
+      <circle cx="15" cy="25" r="1" fill="#d4af37" opacity="0.6"/>
+      <circle cx="85" cy="18" r="1.2" fill="#d4af37" opacity="0.5"/>
     </svg>
 
     <h1>
@@ -838,8 +932,10 @@
         <h3>目的地與日期</h3>
         <p>大阪 Osaka</p>
         <div class="flight-detail">2027/02/27(六) - 03/01(一)</div>
-        <svg class="disney-illus" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#a38260" stroke-width="1.2">
-          <path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9L12 2Z"/>
+        <svg class="disney-illus" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="0.9">
+          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"/>
+          <circle cx="5" cy="5" r="1" fill="#d4af37"/>
+          <circle cx="19" cy="19" r="1.2" fill="#d4af37"/>
         </svg>
       </div>
 
@@ -859,20 +955,26 @@
         <h3>住宿飯店</h3>
         <p>東橫INN 大阪難波</p>
         <div class="flight-detail">連住 2 晚</div>
-        <svg class="disney-illus" width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="#a38260" stroke-width="1.2">
+        <svg class="disney-illus" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="0.9">
           <path d="M12 3L4 19H20L12 3Z"/>
+          <circle cx="12" cy="11" r="1.5" fill="#d4af37"/>
         </svg>
       </div>
     </div>
 
-    <!-- 頁籤切換按鈕 -->
-    <div class="tabs-container">
-      <button class="tab-btn active" onclick="switchTab(event, 'overview')">✨ 行程概覽</button>
-      <button class="tab-btn" onclick="switchTab(event, 'day1')">Day 1． 02/27(六)</button>
-      <button class="tab-btn" onclick="switchTab(event, 'day2')">Day 2． 02/28(日)</button>
-      <button class="tab-btn" onclick="switchTab(event, 'day3')">Day 3． 03/01(一)</button>
-      <button class="tab-btn" onclick="switchTab(event, 'highlights')">🏰 景點介紹</button>
-      <button class="tab-btn" onclick="switchTab(event, 'weather')">🌤️ 天氣概況</button>
+    <!-- 頁籤切換按鈕包覆層 (隱藏拉條左右滾動) -->
+    <div class="tabs-wrapper">
+      <button class="scroll-arrow" onclick="scrollTabs(-150)" title="向左滾動">‹</button>
+      <div class="tabs-container" id="tabsContainer">
+        <button class="tab-btn active" onclick="switchTab(event, 'overview')">✨ 行程概覽</button>
+        <button class="tab-btn" onclick="switchTab(event, 'day1')">Day 1． 02/27(六)</button>
+        <button class="tab-btn" onclick="switchTab(event, 'day2')">Day 2． 02/28(日)</button>
+        <button class="tab-btn" onclick="switchTab(event, 'day3')">Day 3． 03/01(一)</button>
+        <button class="tab-btn" onclick="switchTab(event, 'highlights')">🏰 景點介紹</button>
+        <button class="tab-btn" onclick="switchTab(event, 'backup-food')">🍱 備選餐廳</button>
+        <button class="tab-btn" onclick="switchTab(event, 'weather')">🌤️ 天氣概況</button>
+      </div>
+      <button class="scroll-arrow" onclick="scrollTabs(150)" title="向右滾動">›</button>
     </div>
 
     <!-- 各分頁區塊 -->
@@ -882,7 +984,7 @@
       <div id="overview" class="tab-content active">
         <div class="overview-container">
           
-          <!-- Day 1 Card (4 格) -->
+          <!-- Day 1 Card (精細純向量迪士尼夢幻城堡插畫) -->
           <div class="overview-day-card">
             <div class="overview-side-badge">
               <div>
@@ -890,6 +992,24 @@
                 <div class="day-date">02/27（六）抵達與 EXPO 報到</div>
               </div>
               <a href="https://tenki.jp/forecast/6/30/6200/27100/" target="_blank" class="weather-link">🌤️ 查詢即時天氣 ↗</a>
+              
+              <!-- 100% 穩定顯示的內嵌精細迪士尼城堡向量插圖 -->
+              <svg class="side-badge-svg-illus" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 88H85V82H15V88Z" fill="#ffffff"/>
+                <path d="M22 82V55H38V82H22Z" fill="#ffffff" opacity="0.9"/>
+                <path d="M62 82V55H78V82H62Z" fill="#ffffff" opacity="0.9"/>
+                <path d="M35 82V45H65V82H35Z" fill="#ffffff"/>
+                <!-- 拱門 -->
+                <path d="M43 82V68C43 64.1 46.1 61 50 61C53.9 61 57 64.1 57 68V82H43Z" fill="#a38260"/>
+                <!-- 城堡主塔頂 -->
+                <path d="M30 45L50 12L70 45H30Z" fill="#ffd700"/>
+                <path d="M18 55L30 35L42 55H18Z" fill="#ffd700"/>
+                <path d="M58 55L70 35L82 55H58Z" fill="#ffd700"/>
+                <!-- 魔法閃光星號 -->
+                <path d="M50 5L52 10L57 12L52 14L50 19L48 14L43 12L48 10L50 5Z" fill="#ffffff"/>
+                <circle cx="28" cy="22" r="3" fill="#ffffff" opacity="0.8"/>
+                <circle cx="72" cy="22" r="2.5" fill="#ffffff" opacity="0.8"/>
+              </svg>
             </div>
             <div class="overview-content-body">
               <div class="overview-highlights">
@@ -910,14 +1030,16 @@
                   <div class="overview-step-text">享用味乃家大阪燒補碳，搭乘道頓堀觀光船欣賞繁華夜景。</div>
                 </div>
               </div>
-              <svg class="disney-illus" width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#a38260" stroke-width="1.2">
-                <path d="M5 21V14L3 14V11L5 11V8L12 3L19 8V11L21 11V14L19 14V21H5Z"/>
-                <path d="M9 21V17C9 15.3431 10.3431 14 12 14C13.6569 14 15 15.3431 15 17V21"/>
+              <svg class="disney-illus" width="65" height="65" viewBox="0 0 50 50" fill="none" stroke="#d4af37" stroke-width="0.8">
+                <circle cx="25" cy="25" r="22"/>
+                <circle cx="25" cy="25" r="18" stroke-dasharray="2 2"/>
+                <path d="M25 3L25 47M3 25L47 25"/>
+                <path d="M25 7L38 38L12 38Z"/>
               </svg>
             </div>
           </div>
 
-          <!-- Day 2 Card (4 格對齊) -->
+          <!-- Day 2 Card (精細馬拉松聖火與勝利桂冠純向量插圖) -->
           <div class="overview-day-card">
             <div class="overview-side-badge">
               <div>
@@ -925,6 +1047,21 @@
                 <div class="day-date">02/28（日）大阪馬拉松賽事日</div>
               </div>
               <a href="https://tenki.jp/forecast/6/30/6200/27100/" target="_blank" class="weather-link">🌤️ 查詢即時天氣 ↗</a>
+              
+              <!-- 100% 穩定顯示的內嵌精細馬拉松火炬與桂冠向量插圖 -->
+              <svg class="side-badge-svg-illus" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- 桂冠 -->
+                <path d="M20 50C20 68 33 82 50 85C67 82 80 68 80 50" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 6"/>
+                <!-- 火炬柄 -->
+                <path d="M44 85L47 50H53L56 85H44Z" fill="#ffffff"/>
+                <path d="M42 50H58L62 38H38L42 50Z" fill="#ffd700"/>
+                <!-- 聖火火焰 -->
+                <path d="M50 10C50 10 38 25 44 38C48 30 52 28 52 28C52 28 58 32 56 38C62 28 50 10 50 10Z" fill="#ffffff"/>
+                <path d="M50 18C50 18 43 28 47 36C50 31 52 30 52 30C52 30 55 33 54 36C58 30 50 18 50 18Z" fill="#ffd700"/>
+                <!-- 魔法星光 -->
+                <circle cx="25" cy="30" r="3" fill="#ffd700"/>
+                <circle cx="75" cy="30" r="3" fill="#ffd700"/>
+              </svg>
             </div>
             <div class="overview-content-body">
               <div class="overview-highlights">
@@ -934,7 +1071,7 @@
                 </div>
                 <div class="overview-step">
                   <div class="overview-step-period">☕ 下午</div>
-                  <div class="overview-step-text">完賽會合後返回飯店休息，隨後前往心齋橋享用幸福鬆餅。</div>
+                  <div class="overview-step-text">完賽會合後返回飯店休息，隨後前往心齋橋享用鬆餅（Gram / 幸福鬆餅）。</div>
                 </div>
                 <div class="overview-step">
                   <div class="overview-step-period">🌆 傍晚</div>
@@ -945,13 +1082,15 @@
                   <div class="overview-step-text">享用北村壽喜燒百年名店頂級和牛晚餐慶功。</div>
                 </div>
               </div>
-              <svg class="disney-illus" width="65" height="65" viewBox="0 0 24 24" fill="none" stroke="#a38260" stroke-width="1.2">
+              <svg class="disney-illus" width="55" height="55" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="0.8">
                 <path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9L12 2Z"/>
+                <circle cx="5" cy="6" r="1.5" fill="#d4af37"/>
+                <circle cx="18" cy="18" r="1" fill="#d4af37"/>
               </svg>
             </div>
           </div>
 
-          <!-- Day 3 Card (4 格) -->
+          <!-- Day 3 Card (精細熱氣球與冒險地圖純向量插圖) -->
           <div class="overview-day-card">
             <div class="overview-side-badge">
               <div>
@@ -959,6 +1098,20 @@
                 <div class="day-date">03/01（一）老街巡禮與採買返台</div>
               </div>
               <a href="https://tenki.jp/forecast/6/30/6200/27100/" target="_blank" class="weather-link">🌤️ 查詢即時天氣 ↗</a>
+              
+              <!-- 100% 穩定顯示的內嵌精細迪士尼風格熱氣球向量插圖 -->
+              <svg class="side-badge-svg-illus" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- 熱氣球體 -->
+                <path d="M50 12C32 12 22 26 22 42C22 56 38 68 42 74H58C62 68 78 56 78 42C78 26 68 12 50 12Z" fill="#ffffff"/>
+                <!-- 球體直條紋線條質感 -->
+                <path d="M50 12C40 12 34 26 34 42C34 56 44 74 44 74M50 12C60 12 66 26 66 42C66 56 56 74 56 74" stroke="#a38260" stroke-width="2.5"/>
+                <!-- 吊籃連接繩與籐籃 -->
+                <line x1="40" y1="74" x2="42" y2="84" stroke="#ffffff" stroke-width="2"/>
+                <line x1="60" y1="74" x2="58" y2="84" stroke="#ffffff" stroke-width="2"/>
+                <rect x="40" y="84" width="20" height="12" rx="2" fill="#ffd700"/>
+                <!-- 雲朵裝飾 -->
+                <path d="M10 70C10 65 15 62 20 63C22 58 28 57 32 60C36 57 42 59 43 64C47 64 50 68 48 72H10Z" fill="#ffffff" opacity="0.6"/>
+              </svg>
             </div>
             <div class="overview-content-body">
               <div class="overview-highlights">
@@ -979,16 +1132,17 @@
                   <div class="overview-step-text">搭乘 IT213 班機順利返台。</div>
                 </div>
               </div>
-              <svg class="disney-illus" width="65" height="65" viewBox="0 0 24 24" fill="none" stroke="#a38260" stroke-width="1.2">
+              <svg class="disney-illus" width="55" height="55" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="0.8">
                 <path d="M12 3L4 19H20L12 3Z"/>
-                <path d="M2 19H22V21H2V19Z"/>
+                <circle cx="6" cy="18" r="1.5" fill="#d4af37"/>
+                <circle cx="18" cy="8" r="1" fill="#d4af37"/>
               </svg>
             </div>
           </div>
 
         </div>
 
-        <!-- 行前準備清單（僅在行程概覽頁籤底部顯示） -->
+        <!-- 行前準備清單 -->
         <div id="checklist-section">
           <h2 class="section-title">行前準備清單 Checklist</h2>
           <div class="checklist">
@@ -1026,9 +1180,10 @@
             </label>
 
             <!-- 迪士尼魔法魔杖襯圖 -->
-            <svg class="disney-illus" width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="#a38260" stroke-width="1.2">
+            <svg class="disney-illus" width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="0.8">
               <path d="M4.5 19.5L15.5 8.5"/>
               <path d="M15 4L16.5 7.5L20 9L16.5 10.5L15 14L13.5 10.5L10 9L13.5 7.5L15 4Z"/>
+              <circle cx="6" cy="6" r="1.5" fill="#d4af37"/>
             </svg>
           </div>
         </div>
@@ -1161,14 +1316,19 @@
           </div>
 
           <div class="transport-note">
-            <span class="transport-title">🚶 15:30 - 15:45 飯店 ➔ 幸福鬆餅</span>
-            <span class="transport-desc">從飯店步行約 10–12 分鐘至心齋橋幸福鬆餅。</span>
+            <span class="transport-title">🚶 15:30 - 15:45 飯店 ➔ 心齋橋鬆餅店家</span>
+            <span class="transport-desc">從飯店步行約 10–12 分鐘至心齋橋商圈。</span>
           </div>
 
           <div class="timeline-item">
             <span class="time-badge">15:45 - 16:45</span>
-            <div class="item-title">幸福鬆餅（心齋橋店）<a href="https://www.google.com/maps/search/?api=1&query=A+Happy+Pancake+Shinsaibashi" target="_blank" class="map-btn">📍 地圖</a></div>
-            <div class="item-desc">品嚐入口即化的鬆軟舒芙蕾鬆餅。</div>
+            <div class="item-title">
+              心齋橋經典鬆餅時間（2個推薦選項）
+            </div>
+            <div class="item-desc">
+              <p><b>選項 1：Gram Cafe & Pancakes（心齋橋本店）</b> — 每日限量三時段供應的招牌三層厚舒芙蕾鬆餅。<a href="https://www.google.com/maps/search/?api=1&query=Gram+Cafe+%26+Pancakes+Shinsaibashi" target="_blank" class="map-btn">📍 地圖</a></p>
+              <p style="margin-top:6px;"><b>選項 2：幸福鬆餅（心齋橋店）</b> — 濃郁紐西蘭麥盧卡蜂蜜與高純度新鮮奶油的經典名店。<a href="https://www.google.com/maps/search/?api=1&query=A+Happy+Pancake+Shinsaibashi" target="_blank" class="map-btn">📍 地圖</a></p>
+            </div>
           </div>
 
           <div class="transport-note">
@@ -1190,7 +1350,7 @@
           <div class="timeline-item">
             <span class="time-badge">19:00 - 21:00</span>
             <div class="item-title">北村 壽喜燒（Kitamura）<a href="https://www.google.com/maps/search/?api=1&query=Kitamura+Sukiyaki+Osaka" target="_blank" class="map-btn">📍 地圖</a></div>
-            <div class="item-desc">享用百年關西風高級壽喜燒晚餐。</div>
+            <div class="item-desc">享用百年關西風高級壽喜燒晚餐，慶祝比賽順利完成。</div>
           </div>
 
           <div class="timeline-item">
@@ -1222,7 +1382,7 @@
           </div>
 
           <div class="transport-note">
-            <span class="transport-title">🚶 10:00 - 10:15 難波八阪神社 ➔ 通天閣</span>
+            <span class="transport-title">🚶/𓈒 10:00 - 10:15 難波八阪神社 ➔ 通天閣</span>
             <span class="transport-desc">步行至「惠美須町站」方向約 12–15 分鐘；或至「難波站」搭乘堺筋線前往「惠美須町站」出站即達。</span>
           </div>
 
@@ -1400,6 +1560,47 @@
 
       </div>
 
+      <!-- 備選餐廳分頁 -->
+      <div id="backup-food" class="tab-content">
+        <div class="day-group-title">🍱 備選美食與居酒屋資訊</div>
+        <div class="spot-grid">
+          
+          <div class="spot-card">
+            <div class="spot-body">
+              <div class="spot-header">
+                <span class="spot-title">魚市 居酒屋</span>
+                <span class="spot-tag food">海鮮居酒屋</span>
+              </div>
+              <p class="spot-desc">大阪難波與梅田一帶熱門的地道海鮮居酒屋，每日嚴選港口直送新鮮刺身、燒烤生蠔與傳統日式酒場料理，氣氛熱絡非常適合賽後放鬆小酌。</p>
+              <a href="https://www.google.com/maps/search/?api=1&query=Uoichi+Izakaya+Osaka" target="_blank" class="map-btn" style="align-self: flex-start;">📍 Google Maps 導航</a>
+            </div>
+          </div>
+
+          <div class="spot-card">
+            <div class="spot-body">
+              <div class="spot-header">
+                <span class="spot-title">豪快水産</span>
+                <span class="spot-tag food">豪邁海鮮料理</span>
+              </div>
+              <p class="spot-desc">以份量澎湃豪邁著稱的水產名店，招牌包含滿溢爆量海鮮丼、生魚片拼盤與各式現烤海鮮，CP值極高且口感鮮甜令人大呼過癮。</p>
+              <a href="https://www.google.com/maps/search/?api=1&query=Gokai+Suisan+Osaka" target="_blank" class="map-btn" style="align-self: flex-start;">📍 Google Maps 導航</a>
+            </div>
+          </div>
+
+          <div class="spot-card">
+            <div class="spot-body">
+              <div class="spot-header">
+                <span class="spot-title">磯丸水産（道頓堀店）</span>
+                <span class="spot-tag food">海鮮燒烤與海膽</span>
+              </div>
+              <p class="spot-desc">24小時營業的超人氣海鮮濱燒名店！桌面即設烤爐可親自體驗蟹膏甲羅燒、炙燒海膽、烤扇貝與巨型大蝦，是隨時想享用海鮮美食的完美備選！</p>
+              <a href="https://www.google.com/maps/search/?api=1&query=Isomaru+Suisan+Dotonbori" target="_blank" class="map-btn" style="align-self: flex-start;">📍 Google Maps 導航</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
       <!-- 天氣概況分頁 -->
       <div id="weather" class="tab-content">
         <div class="weather-grid">
@@ -1479,10 +1680,11 @@
       </div>
       <p style="color: var(--text-muted); font-size: 0.85rem;">入住時間：2027/02/27 - 2027/03/01 (2晚)</p>
       
-      <svg class="disney-illus" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#a38260" stroke-width="1.2">
+      <svg class="disney-illus" width="65" height="65" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="0.8">
         <path d="M12 2L15 8H9L12 2Z"/>
         <path d="M4 21V12L12 8L20 12V21H4Z"/>
         <path d="M9 21V16H15V21"/>
+        <circle cx="5" cy="6" r="1.2" fill="#d4af37"/>
       </svg>
     </div>
 
@@ -1509,7 +1711,7 @@
       },
       'day2': {
         title: '📍 Day 2 路線規劃 (大阪馬拉松賽事與慶功)',
-        stops: ['東橫INN 大阪難波', '大阪城公園起跑區', '大阪城天守閣', '幸福鬆餅 心齋橋店', '阿倍野 HARUKAS 300', '北村 壽喜燒', '東橫INN 大阪難波'],
+        stops: ['東橫INN 大阪難波', '大阪城公園起跑區', '大阪城天守閣', '心齋橋鬆餅(Gram / 幸福鬆餅)', '阿倍野 HARUKAS 300', '北村 壽喜燒', '東橫INN 大阪難波'],
         fullRouteUrl: 'https://www.google.com/maps/dir/Toyoko+Inn+Osaka+Namba/Osaka+Castle+Park/Osaka+Castle/A+Happy+Pancake+Shinsaibashi/HARUKAS+300/Kitamura+Sukiyaki+Osaka/',
         embedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d105000.00000000000!2d135.50000000!3d34.67000000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000e6553406e2e1%3A0x62bc3751a1738035!2sOsaka%2C%20Japan!5e0!3m2!1szh-TW!2stw!4v1700000000000!5m2!1szh-TW!2stw'
       },
@@ -1521,7 +1723,15 @@
       }
     };
 
+    function scrollTabs(offset) {
+      const container = document.getElementById('tabsContainer');
+      container.scrollBy({ left: offset, behavior: 'smooth' });
+    }
+
     function switchTab(evt, tabId) {
+      // 觸發星光噴發特效
+      createSparkleBurst(evt.clientX, evt.clientY);
+
       const tabContents = document.querySelectorAll('.tab-content');
       tabContents.forEach(content => content.classList.remove('active'));
 
@@ -1531,12 +1741,44 @@
       document.getElementById(tabId).classList.add('active');
       evt.currentTarget.classList.add('active');
 
+      // 自動水平滾動將當前選中的按鈕移至可見中央
+      evt.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+
       const routeMapSection = document.getElementById('route-map-section');
       if (['day1', 'day2', 'day3'].includes(tabId)) {
         routeMapSection.style.display = 'block';
         updateRouteMapPanel(tabId);
       } else {
         routeMapSection.style.display = 'none';
+      }
+    }
+
+    function createSparkleBurst(x, y) {
+      const particleCount = 12;
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'sparkle-particle';
+        
+        const size = Math.random() * 6 + 3;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        particle.style.left = `${x}px`;
+        particle.style.top = `${y}px`;
+
+        const angle = (Math.PI * 2 / particleCount) * i + Math.random() * 0.5;
+        const velocity = Math.random() * 40 + 20;
+        const dx = Math.cos(angle) * velocity;
+        const dy = Math.sin(angle) * velocity;
+
+        particle.style.setProperty('--dx', `${dx}px`);
+        particle.style.setProperty('--dy', `${dy}px`);
+
+        document.body.appendChild(particle);
+
+        setTimeout(() => {
+          particle.remove();
+        }, 650);
       }
     }
 
@@ -1591,7 +1833,7 @@
     }
 
     // 電腦版滑鼠滾輪橫向滾動
-    const tabsContainer = document.querySelector('.tabs-container');
+    const tabsContainer = document.getElementById('tabsContainer');
     if (tabsContainer) {
       tabsContainer.addEventListener('wheel', (evt) => {
         evt.preventDefault();
