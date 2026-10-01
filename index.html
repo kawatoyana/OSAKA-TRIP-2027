@@ -305,27 +305,6 @@
       z-index: 2;
     }
 
-    .overview-side-badge .weather-link {
-      margin-top: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.78rem;
-      color: #fff;
-      background: rgba(255, 255, 255, 0.22);
-      padding: 5px 12px;
-      border-radius: 12px;
-      text-decoration: none;
-      transition: background 0.2s;
-      width: fit-content;
-      position: relative;
-      z-index: 2;
-    }
-
-    .overview-side-badge .weather-link:hover {
-      background: rgba(255, 255, 255, 0.38);
-    }
-
     /* 內嵌純向量裝飾插圖（保證 100% 顯示不破圖） */
     .side-badge-svg-illus {
       position: absolute;
@@ -401,6 +380,11 @@
     }
 
     /* 天氣概況頁面 */
+    .weather-top-bar {
+      margin-bottom: 20px;
+      text-align: right;
+    }
+
     .weather-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(295px, 1fr));
@@ -457,19 +441,23 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      width: 100%;
-      margin-top: 14px;
-      padding: 8px;
-      background: var(--bg-main);
+      padding: 10px 20px;
+      background: var(--bg-card);
       color: var(--primary-dark);
-      font-size: 0.82rem;
+      font-size: 0.88rem;
       font-weight: 600;
-      border-radius: 8px;
+      border-radius: 20px;
+      border: 1px solid var(--accent);
       text-decoration: none;
-      transition: background 0.2s ease;
+      box-shadow: var(--shadow);
+      transition: all 0.2s ease;
     }
 
-    .weather-external-btn:hover { background: var(--accent); }
+    .weather-external-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
 
     /* 時間軸與交通備註 */
     .timeline {
@@ -991,7 +979,6 @@
                 <div class="day-num">DAY 01</div>
                 <div class="day-date">02/27（六）抵達與 EXPO 報到</div>
               </div>
-              <a href="https://tenki.jp/forecast/6/30/6200/27100/" target="_blank" class="weather-link">🌤️ 查詢即時天氣 ↗</a>
               
               <!-- 100% 穩定顯示的內嵌精細迪士尼城堡向量插圖 -->
               <svg class="side-badge-svg-illus" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1046,7 +1033,6 @@
                 <div class="day-num">DAY 02</div>
                 <div class="day-date">02/28（日）大阪馬拉松賽事日</div>
               </div>
-              <a href="https://tenki.jp/forecast/6/30/6200/27100/" target="_blank" class="weather-link">🌤️ 查詢即時天氣 ↗</a>
               
               <!-- 100% 穩定顯示的內嵌精細馬拉松火炬與桂冠向量插圖 -->
               <svg class="side-badge-svg-illus" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1097,7 +1083,6 @@
                 <div class="day-num">DAY 03</div>
                 <div class="day-date">03/01（一）老街巡禮與採買返台</div>
               </div>
-              <a href="https://tenki.jp/forecast/6/30/6200/27100/" target="_blank" class="weather-link">🌤️ 查詢即時天氣 ↗</a>
               
               <!-- 100% 穩定顯示的內嵌精細迪士尼風格熱氣球向量插圖 -->
               <svg class="side-badge-svg-illus" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1239,7 +1224,7 @@
 
           <div class="transport-note">
             <span class="transport-title">🚃 15:50 - 16:25 Intex大阪 ➔ 住吉大社</span>
-            <span class="transport-desc">從「中埠頭站」搭乘 New Tram 至「住之江公園站」，轉乘南海巴士或電車（或搭乘阪堺電車）前往「住吉大社站 / 住吉鳥居前站」，車程約 30 分鐘。</span>
+            <span class="transport-desc">從「中埠頭站」搭乘 New Tram 至「住之江公園站」，轉乘南海巴士或電車（或搭乘阪界電車）前往「住吉大社站 / 住吉鳥居前站」，車程約 30 分鐘。</span>
           </div>
 
           <div class="timeline-item">
@@ -1603,6 +1588,9 @@
 
       <!-- 天氣概況分頁 -->
       <div id="weather" class="tab-content">
+        <div class="weather-top-bar">
+          <a href="https://tenki.jp/forecast/6/30/6200/27100/" target="_blank" class="weather-external-btn">🌐 查看日本氣象協會即時預報 ↗</a>
+        </div>
         <div class="weather-grid">
           
           <div class="weather-card">
@@ -1615,7 +1603,6 @@
               <p><b>體感評估：</b> 沿海地區（如 INTEX 大阪）風力較大，體感溫度較低。</p>
               <p><b>穿搭建議：</b> 發熱衣 + 毛衣 + 防風長版大衣，配戴圍巾備用。</p>
             </div>
-            <a href="https://tenki.jp/forecast/6/30/6200/27100/" target="_blank" class="weather-external-btn">🌐 查看日本氣象協會即時預報 ↗</a>
           </div>
 
           <div class="weather-card">
@@ -1628,7 +1615,6 @@
               <p><b>體感評估：</b> 清晨起跑時氣溫較低（約 4°C–6°C），白天日照充足且氣候宜人。</p>
               <p><b>穿搭建議：</b> 跑者起跑前請注意保暖（可穿拋棄式雨衣/薄外套），觀賽與遊覽準備好羽絨外套。</p>
             </div>
-            <a href="https://tenki.jp/forecast/6/30/6200/27100/" target="_blank" class="weather-external-btn">🌐 查看日本氣象協會即時預報 ↗</a>
           </div>
 
           <div class="weather-card">
@@ -1641,7 +1627,6 @@
               <p><b>體感評估：</b> 氣溫適中，非常適合戶外步行程與商圈購物。</p>
               <p><b>穿搭建議：</b> 洋蔥式穿搭，室內及電車內皆有暖氣，方便穿脫之外套為佳。</p>
             </div>
-            <a href="https://tenki.jp/forecast/6/30/6200/27100/" target="_blank" class="weather-external-btn">🌐 查看日本氣象協會即時預報 ↗</a>
           </div>
 
         </div>
