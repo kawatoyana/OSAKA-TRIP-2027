@@ -157,12 +157,37 @@
       border-radius: 2px;
     }
 
-    /* 頁籤外層包覆容器 (附滾動按鈕與遮罩) */
+    /* 頁籤外層包覆容器 */
     .tabs-wrapper {
       position: relative;
       margin-bottom: 25px;
       display: flex;
       align-items: center;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      z-index: 100;
+      padding: 0;
+    }
+
+    /* 吸頂半透明自然融合效果 */
+    .tabs-wrapper.is-sticky {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      margin: 0;
+      padding: 8px 5%;
+      background: rgba(249, 246, 240, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(196, 164, 130, 0.15);
+      box-shadow: 0 4px 15px rgba(74, 64, 58, 0.05);
+      animation: slideDown 0.3s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
     .scroll-arrow {
@@ -198,6 +223,8 @@
       -ms-overflow-style: none;  /* IE and Edge */
       -webkit-overflow-scrolling: touch;
       width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
       white-space: nowrap;
       position: relative;
     }
@@ -568,6 +595,8 @@
       border-radius: 20px;
       transition: background 0.2s ease;
       font-weight: 500;
+      position: relative;
+      z-index: 5;
     }
 
     .map-btn:hover { background: var(--accent); }
@@ -793,6 +822,8 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 8px;
+      position: relative;
+      z-index: 2;
     }
 
     .check-item {
@@ -825,6 +856,13 @@
       bottom: 10px;
       opacity: 0.22;
       pointer-events: none;
+    }
+
+    /* 調整住宿資訊卡片專用迪士尼城堡位置往左移，避免與右上角導航按鈕重疊 */
+    .hotel-card .disney-illus {
+      right: 110px;
+      bottom: 10px;
+      z-index: 1;
     }
 
     /* 回到頂端浮動按鈕 */
@@ -950,8 +988,8 @@
       </div>
     </div>
 
-    <!-- 頁籤切換按鈕包覆層 (隱藏拉條左右滾動) -->
-    <div class="tabs-wrapper">
+    <!-- 頁籤切換按鈕包覆層 (附滾動按鈕與吸頂樣式) -->
+    <div class="tabs-wrapper" id="tabsWrapper">
       <button class="scroll-arrow" onclick="scrollTabs(-150)" title="向左滾動">‹</button>
       <div class="tabs-container" id="tabsContainer">
         <button class="tab-btn active" onclick="switchTab(event, 'overview')">✨ 行程概覽</button>
@@ -1663,8 +1701,9 @@
         <h3 style="color: var(--primary-dark); font-size: 1.05rem;">東橫INN 大阪難波 (Toyoko Inn Osaka Namba)</h3>
         <a href="https://www.google.com/maps/search/?api=1&query=Toyoko+Inn+Osaka+Namba" target="_blank" class="map-btn">📍 導航</a>
       </div>
-      <p style="color: var(--text-muted); font-size: 0.85rem;">入住時間：2027/02/27 - 2027/03/01 (2晚)</p>
+      <p style="color: var(--text-muted); font-size: 0.85rem; position: relative; z-index: 2;">入住時間：2027/02/27 - 2027/03/01 (2晚)</p>
       
+      <!-- 調整迪士尼城堡位置往左移，完全避免與右上角導航重疊 -->
       <svg class="disney-illus" width="65" height="65" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="0.8">
         <path d="M12 2L15 8H9L12 2Z"/>
         <path d="M4 21V12L12 8L20 12V21H4Z"/>
@@ -1728,6 +1767,15 @@
 
       // 自動水平滾動將當前選中的按鈕移至可見中央
       evt.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+
+      // 當頁面處於吸頂模式或下方內容區時，點擊頁籤自動流暢滾動至對應內容上方
+      const tabsWrapper = document.getElementById('tabsWrapper');
+      if (tabsWrapper.classList.contains('is-sticky') || window.scrollY > 300) {
+        const itinerarySection = document.getElementById('itinerary-section');
+        const yOffset = -70; // 扣除懸浮選單高度的間距
+        const y = itinerarySection.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
 
       const routeMapSection = document.getElementById('route-map-section');
       if (['day1', 'day2', 'day3'].includes(tabId)) {
@@ -1800,13 +1848,23 @@
       }
     }
 
-    // 回到頂端控制邏輯
+    // 頁面滾動監控：處理回到頂端按鈕與 300px 頁籤懸浮吸頂
     const backToTopBtn = document.getElementById('backToTopBtn');
+    const tabsWrapper = document.getElementById('tabsWrapper');
+
     window.addEventListener('scroll', () => {
+      // 1. 回到頂端按鈕
       if (window.scrollY > 300) {
         backToTopBtn.classList.add('show');
       } else {
         backToTopBtn.classList.remove('show');
+      }
+
+      // 2. 滾動超過 300px 時自動優雅吸頂與半透明懸浮
+      if (window.scrollY > 300) {
+        tabsWrapper.classList.add('is-sticky');
+      } else {
+        tabsWrapper.classList.remove('is-sticky');
       }
     });
 
